@@ -2,6 +2,7 @@ use strict;
 use warnings;
 use ExtUtils::MakeMaker qw/prompt/;
 use File::Spec;
+use Config;
 
 my @modules;
 for my $name (<DATA>) {
@@ -22,11 +23,23 @@ print "$_\n", for @modules;
 
 exit 1 unless lc prompt('Aer you shure to install modules?', 'y') eq 'y';
 
-!system 'which cpanm > ' . File::Spec->devnull or do {
+which('cpanm') or do {
     my $cmd = $^O eq 'MSWin32' ? 'lwp-request' : $^O eq 'darwin' ? 'curl -L' : 'wget -O - --no-check-certificate';
     system "$cmd http://cpanmin.us | perl - --self-upgrade";
 };
 system 'cpanm', @ARGV, @modules;
+
+sub which {
+    my ($name) = @_;
+    my $exe_ext = $Config{_exe};
+    for my $dir (File::Spec->path) {
+        my $fullpath = File::Spec->catfile($dir, $name);
+        if (-x $fullpath || -x ($fullpath .= $exe_ext)) {
+            return 1;
+        }
+    }
+    return;
+}
 
 __END__
 # Commands
