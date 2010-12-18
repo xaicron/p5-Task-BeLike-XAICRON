@@ -1,0 +1,11 @@
+=pod
+
+=head1 INSTALLATION
+
+perl Makefile.PL
+
+=head1 AUTHOR
+
+xaicron
+
+=cut
