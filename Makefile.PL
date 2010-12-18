@@ -22,7 +22,10 @@ print "$_\n", for @modules;
 
 exit 1 unless lc prompt('Aer you shure to install modules?', 'y') eq 'y';
 
-!system 'which cpanm > ' . File::Spec->devnull or system 'wget -O - http://cpanmin.us | perl - --self-upgrade';
+!system 'which cpanm > ' . File::Spec->devnull or do {
+    my $cmd = $^O eq 'MSWin32' ? 'lwp-request' : $^O eq 'darwin' ? 'curl -L' : 'wget -O - --no-check-certificate';
+    system "$cmd http://cpanmin.us | perl - --self-upgrade";
+};
 system 'cpanm', @ARGV, @modules;
 
 __END__
