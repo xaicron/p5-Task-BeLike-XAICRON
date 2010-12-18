@@ -45,7 +45,7 @@ Module::Install::Repository
 Module::Install::AuthorTests
 Module::Install::AuthorRequires
 Module::Install::XSUtil
-Module::Install::TesTarget
+Module::Install::TestTarget
 
 # Test
 Test::Requires
